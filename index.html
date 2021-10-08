@@ -38,8 +38,17 @@
   <a-scene embedded arjs>
  
   
+<<<<<<< HEAD
     <a-marker preset='hiro'>   
 			<a-box position='0 0.5 0' material='opacity: 0.5;'></a-box>
+=======
+    <a-assets>
+		<a-asset-item id="baby" src="https://razking.github.io/assets/baby.glb"></a-asset-item>
+	</a-assets>
+  
+    <a-marker preset='hiro'>
+      <a-entity gltf-model="#baby" scale="15 15 15"></a-entity>
+>>>>>>> parent of e36181b (Update index.html)
     </a-marker>
 	
 	<a-entity camera></a-entity>
