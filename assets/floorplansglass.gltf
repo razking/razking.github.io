@@ -224,6 +224,7 @@
     ],
     "materials" : [
         {
+            "alphaMode" : "BLEND",
             "doubleSided" : true,
             "name" : "Glass.001",
             "pbrMetallicRoughness" : {
@@ -231,9 +232,9 @@
                     0.5879999995231628,
                     0.5879999995231628,
                     0.5879999995231628,
-                    0.5
+                    0.38787877559661865
                 ],
-                "roughnessFactor" : 0.858578622341156
+                "roughnessFactor" : 0
             }
         }
     ],
