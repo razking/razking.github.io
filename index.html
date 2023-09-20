@@ -39,15 +39,7 @@
     arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
 	id="scene"
   >
- 
-    <a-nft
-      type="nft"
-      url="https://razking.github.io/assets/nft/Floorplans"
-      smooth="true"
-      smoothCount="10"
-      smoothTolerance=".01"
-      smoothThreshold="5"
-    >
+
 	  
       <a-text
         value="Floor 1"
@@ -59,13 +51,12 @@
 	  
 	  <a-entity
               id="floorplanmodel"
-        gltf-model="https://razking.github.io/assets/floorplans.gltf"
+        gltf-model="ARDianneSmart"
         scale="4 4 4"
         position="125 0 -250"
 		rotation="-40 -50 30"
 		shadow="receive: true"
       >
-    </a-nft>
 	
 	  <a-light type="ambient" intensity="0.7"></a-light>
 	  <a-entity light="type: directional; color: #FFF; intensity: 0.6 castShadow: true; shadowMapHeight:512; shadowMapWidth: 512; shadowCameraTop: 100; shadowCameraBottom: -100; shadowCameraRight: 100; shadowCameraLeft: -100; target: #floorplanmodel;" position="-0.5 1 1"</a-entity>
