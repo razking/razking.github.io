@@ -1,66 +1,58 @@
-<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
-<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-<script src="https://razking.github.io/gesture-detector.js"></script>
-<script src="https://razking.github.io/gesture-handler.js"></script>
-
-
-<style>
-  .arjs-loader {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .arjs-loader div {
-    text-align: center;
-    font-size: 1.25em;
-    color: white;
-  }
-</style>
-
-<body style="margin : 0px; overflow: hidden;">
-  <!--loader shown until image descriptors are loaded -->
-  <div class="arjs-loader">
-    <div>Loading, please wait...</div>
-  </div>
-  <a-scene
-    vr-mode-ui="enabled: false;"
-    renderer="logarithmicDepthBuffer: true;"
-    embedded
-	gesture-detector
-    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
-	id="scene"
-  >
-
-	  
-      <a-text
-        value="Floor 1"
-        scale="120 120 120"
-		look-at="[camera]"
-		position="75 0 -150"
-		color="black"
-      ></a-text>
-	  
-	  <a-entity
-              id="floorplanmodel"
-        gltf-model="https://razking.github.io/assets/ARDianneSmart.gltf"
-        scale="4 4 4"
-        position="125 0 -250"
-		rotation="-40 -50 30"
-		shadow="receive: true"
-      >
-	
-	  <a-light type="ambient" intensity="0.7"></a-light>
-	  <a-entity light="type: directional; color: #FFF; intensity: 0.6 castShadow: true; shadowMapHeight:512; shadowMapWidth: 512; shadowCameraTop: 100; shadowCameraBottom: -100; shadowCameraRight: 100; shadowCameraLeft: -100; target: #floorplanmodel;" position="-0.5 1 1"</a-entity>
-	
-	
-    <a-entity camera></a-entity>
-  </a-scene>
-</body>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.0.0/dist/aframe-extras.min.js"></script>
+    <style>
+a-scene {
+  width: 512px;
+  height: 512px;
+}
+    </style>
+    <script>
+AFRAME.registerComponent("dnd-gltf", {
+  init: function () {
+    this.el.addEventListener("dragover", ev => {
+      if (ev.dataTransfer) ev.preventDefault();
+    }, false);
+    this.el.addEventListener("drop", ev => {
+      if (!ev.dataTransfer) return;
+      ev.preventDefault();
+      //console.log("canvas drop", ev.dataTransfer);
+      for (const item of ev.dataTransfer.items) {
+        if (item.kind !== "file") continue;
+        const file = item.getAsFile();
+        if (!file.name.endsWith(".gltf") && !file.name.endsWith(".glb")) continue;
+        const reader = new FileReader();
+        reader.addEventListener("load", ev => {
+          //console.log(reader.result);
+          const item = document.createElement("a-asset-item");
+          item.id = file.name;
+          item.setAttribute("src", reader.result);
+          this.el.querySelector("a-assets").append(item);
+          const entity = document.createElement("a-entity");
+          entity.setAttribute("gltf-model", `#${file.name}`);
+          entity.setAttribute("animation-mixer", "");
+          this.el.append(entity);
+        });
+        reader.readAsDataURL(file);
+      }
+    }, false);
+    //console.log("canvas file dnd");
+  },
+});
+    </script>
+  </head>
+  <body>
+    <h1>A-Frame GLTF viewer with animation</h1>
+    <p>Drop your gltf/glb file</p>
+    <div>
+      <a-scene embedded dnd-gltf>
+        <a-assets></a-assets>
+        <a-plane position="0 -0.1 0" rotation="-90 0 0" width="4" height="4"
+                 color="#7BC8A4"></a-plane>
+        <a-sky color="#ECECEC"></a-sky>
+        <a-camera position="0 1 4"></a-camera>
+      </a-scene>
+    </div>
+  </body>
+</html>
